@@ -4,7 +4,7 @@ import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import Accordion from './Accordion';
 
-const sectionProbs = [
+const sectionProps = [
     {
       title: 'Section 1',
       content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
@@ -27,13 +27,22 @@ describe(`Tabs Component`, () => {
     })
 
     it('renders no sections active by default', () => {
-        const wrapper =shallow(<Accordion section={sectionProbs}/>)
+        const wrapper =shallow(<Accordion sections={sectionProps}/>)
         expect(toJson(wrapper)).toMatchSnapshot()
     })
 
     it('renders a clicked section', () => {
-        const wrapper = shallow(<Accordion section={sectionProbs}/>)
+        const wrapper = shallow(<Accordion sections={sectionProps}/>)
         wrapper.find('button').at(0).simulate('click')
         expect(toJson(wrapper)).toMatchSnapshot()
+    })
+
+    it('only renders last clicked section', () => {
+      const wrapper = shallow(<Accordion sections={sectionProps}/>);
+      const buttons = wrapper.find('button');
+      buttons.forEach(button => {
+        button.simulate('click')
+      })
+      expect(toJson(wrapper)).toMatchSnapshot();
     })
   })
